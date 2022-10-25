@@ -2,17 +2,17 @@
 
 let nombreUsuario = 'diego';
 
-    function solicitarUsuario(){
+    function login(){
     let ingresar = false;
 
         let  userName = prompt('Ingresá tu Usuario');    
             if (userName == nombreUsuario) {
                 ingresar = true;
-                
+                return ingresar;
             }else{
                 alert('Usuario no Válido')
             }
-        }
+}
 
 
 
