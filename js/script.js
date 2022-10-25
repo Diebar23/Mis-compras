@@ -1,14 +1,40 @@
-/* let ciudad = 'Buenos Aires'
-console.log()
-/* alert (ciudad) */
-/* 
-let nombreUsuario = prompt('ingresa tu nombre')
-let edadUsuario = parseInt (prompt('ingresa tu edad')) */
 
-let edadActual = parseInt(prompt('ingresa tu edad hoy'));
-let edadEn5 = edadActual+5;
-alert('en 5 años tendras '+edadEn5+' años.');
-46
+let savedUsuario = 'diego'
 
-let dato = prompt('ingresa tu nombre');
-alert('Bienvenido'+dato);
+function login(){
+    let ingresar = false;
+
+    let  userUsuario = prompt('Ingresá tu Usuario');    
+        if (userUsuario == savedUsuario) {
+            ingresar = true;
+            break;
+        }else{
+            alert('Usuario no Válido')
+        }
+    }
+}
+
+
+
+let savedPASS = '1234';
+
+function login(){
+    let ingresar = false;
+
+    for (let i = 2; i >= 0; i--) {
+        let  userPASS = prompt('Ingresá tu Contraseña. Tenes ' + ( i + 1) + ' oportunidades.');    
+        if (userPASS == savedPASS) {
+            alert('ingreso exitoso. Bienvenido/a');
+            ingresar = true;
+            break;
+        }else{
+            alert('Error. Te quedan ' + i + ' Intentos')
+        }
+    }
+
+return ingresar;
+
+
+}
+
+
