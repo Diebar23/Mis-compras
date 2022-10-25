@@ -1,29 +1,29 @@
 
-let savedUsuario = 'diego'
 
-function login(){
+let nombreUsuario = 'diego';
+
+    function solicitarUsuario(){
     let ingresar = false;
 
-    let  userUsuario = prompt('Ingresá tu Usuario');    
-        if (userUsuario == savedUsuario) {
-            ingresar = true;
-            break;
-        }else{
-            alert('Usuario no Válido')
+        let  userName = prompt('Ingresá tu Usuario');    
+            if (userName == nombreUsuario) {
+                ingresar = true;
+                
+            }else{
+                alert('Usuario no Válido')
+            }
         }
-    }
-}
 
 
 
-let savedPASS = '1234';
+let clavePASS = '1234';
 
 function login(){
     let ingresar = false;
 
     for (let i = 2; i >= 0; i--) {
         let  userPASS = prompt('Ingresá tu Contraseña. Tenes ' + ( i + 1) + ' oportunidades.');    
-        if (userPASS == savedPASS) {
+        if (userPASS == clavePASS) {
             alert('ingreso exitoso. Bienvenido/a');
             ingresar = true;
             break;
