@@ -1,93 +1,72 @@
+//Array para carrito
+const productos = [
+    {nombre: 'hamburguesa paty ', precio: 350},
+    {nombre: 'hamburguesa swift ',precio: 300},
+    {nombre: 'medallon de pollo swift ',precio: 400},
+    {nombre: 'milanesa de soja swift ',precio: 380},
+    {nombre: 'patynesa paty ', precio: 450},
+];
+let carrito = []
 
+let seleccion = prompt('Desea agregar productos al carrito si o no')
 
-let nombreUsuario = 'diego';
-//Ingreso usuario
+while(seleccion != 'si' && seleccion != 'no'){
+    alert('por favor ingrese si o no')
+    seleccion = prompt('Desea agregar productos al carrito si o no')
+}
 
-function loginUsuario(){
-    let ingresar = false;
-    
-        let  userName = prompt(`Ingresá tu Usuario`);    
-        while(ingresar = false){
-            if (userName == nombreUsuario) {
-                ingresar = true;
+if(seleccion == 'si'){
+    alert('Estos son nuetros productos')
+let todosLosProductos = productos.map(
+    (producto) => producto.nombre + '' + '' + producto.precio + '$');
+alert(todosLosProductos.join(' - '))
+} else if (seleccion == 'no'){
+    alert('Hasta pronto')
+}
+
+while(seleccion != 'no'){
+    let producto = prompt('Agregar producto')
+    let precio = 0
+
+    if (producto == 'hamburguesa paty' || producto == 'hamburguesa swift' || 
+    producto == 'medallon de pollo' || producto == 'milanesa de soja paty' || 
+    producto == 'patynesa paty'){
+        switch (producto){
+            case 'hamburguesa paty':
+                precio = 350;
                 break;
-            
-            }else{
-                alert(`Usuario no Válido`);
-                ingresar = false;
-            }
-            }   
-        
-            
-}
-
-loginUsuario();
-
-
-let clavePASS = '1234';
-//Ingreso contraseña
-function loginContraseña(){
-    let ingresar = false;
-    for (let i = 2; i >= 0; i--) {
-        let  userPASS = prompt(`Ingresá tu Contraseña. Tenes  ${( i + 1)}  oportunidades.`);    
-        if (userPASS == clavePASS) {
-            alert(`ingreso exitoso. Bienvenido/a`);
-            ingresar = true;
-            break;
-        }else{
-            alert(`Error. Te quedan  ${i}  Intentos`);
+            case 'hamburguesa swift':
+                precio = 300;
+                break;
+            case 'medallon de pollo swift':
+                precio = 400;
+                break;
+            case 'milanesa de soja swift':
+                precio = 380;
+                break;
+            case 'patynesa paty':
+                precio = 450;
+                break;
+            default:
+                break;
         }
+    let unidades = parseInt(prompt('Elija la cantidad'))
+
+    carrito.push({producto, unidades, precio})
+    console.log(carrito)
+    } else {
+        alert('producto sin existencia')
     }
+    seleccion = prompt('quiero agregar algo mas?')
 
-return ingresar;
-
-
-}
-loginContraseña();
-
-
-class Producto {
-
-    constructor(nombre, marca, precio, id){
-        this.nombre = nombre;
-        this.marca = marca;
-        this.precio = parseInt(precio);
-        this.id = id;
-    }
-    
-    asignarId(array) {
-        this.id = array.length;
-    }
-}
-
-const Productos = [
-    new Producto('hamburguesa','paty',350,1),
-    new Producto('hamburguesa','swift',300,2),
-    new Producto('medallon de pollo','swift',400,3),
-    new Producto('milanesa de soja','swift',380,4),
-    new Producto('patynesa','paty',4500,5),
-]
-console.log(Producto);
-
-let continuar = true;
-
-while(continuar){
-
-    let ingreso = prompt('ingresar producto: nombre, marca separados por un guion (-), para finalizar presione X');
-
-    if (ingreso.toUpperCase() =='X'){
-        continuar = false;
+    while(seleccion == 'no'){
+        alert('Gracias por su compra')
+        carrito.forEach((carritoFinal) =>{
+            console.log(`producto: ${carritoFinal.producto}, unidades: ${carritoFinal.unidades},
+            Total a pagar ${carritoFinal.unidades * carritoFinal.precio}`)
+        })
         break;
     }
-
-    const datos = ingreso.split('-');
-    console.log(datos);
-
-    const producto = new Producto(datos[0],datos[1],datos[2],datos[3],datos[4]);
-
-    Productos.push(producto);
-    producto.asignarId(Productos);
-    console.log(Productos)
-
 }
-
+const total = carrito.reduce((acc, el) => acc + el.precio * el.unidades, 0)
+console.log(`Total de la compra: ${total}`)
