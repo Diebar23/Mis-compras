@@ -21,7 +21,7 @@ const inputMailLogi = document.getElementById('emailLogin'),
     modalEl = document.getElementById('modalLogin'),
     modal = new bootstrap.modal(modalEl),
     contTargetas = document.getElementById('tarjetas'),
-    elementTogglebles = document.querySelectorAll('toggleable');
+    elementTogglebles = document.querySelectorAll('toggeable');
 
 function validarUsuario(mail,pass,userDB){
     let encontrado = userDB.find(userDB=>userDB.mail==mail);
@@ -127,15 +127,15 @@ presentarInfo(elementosToggleables, 'd-none');
 //Array para carrito
 const productos = [
     {nombre: "hamburguesa paty ", 
-    precio: 350},
+    precio: 350, img: './img/Hamburguesa Paty.jpg'},
     {nombre: "hamburguesa swift",
-    precio: 300},
+    precio: 300, img: 'img/Hamburguesa Swift.jpg'},
     {nombre: "medallon de pollo swift",
-    precio: 400},
+    precio: 400, img: 'img/Medallon de pollo Swift.jpg'},
     {nombre: "milanesa de soja swift",
-    precio: 380},
+    precio: 380, img: 'img/Milanesa de soja Swift.jpg'},
     {nombre: "patynesa paty", 
-    precio: 450},
+    precio: 450, img: 'img/Patynesa Paty.jpg'},
 ];
 
 
