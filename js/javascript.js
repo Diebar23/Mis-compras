@@ -31,7 +31,7 @@ if (login()) {
 
     //Acceso a la info de la cuenta
 
-    let saldo = 20000000;
+    let saldo = 2000000;
 
     let opcion = prompt('Elegí una opción: \n1- Saldo. \n2 - Retiro de dinero. \n3 - Depósito. \nPresioná X para finalizar.');
 
