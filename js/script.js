@@ -1,106 +1,167 @@
-class Producto {
+//Fake Databases de Usuarios y Productos (En el mundo real esto está en una DB que es accedida a través del backend)
+const usuarios = [{
+    nombre: 'Diego',
+    mail: 'diegobarbas@mail.com',
+    pass: 'DB1234'
+},
+{
+    nombre: 'Camila',
+    mail: 'camiladr@mail.com',
+    pass: 'CDR1975'
+},
+{
+    nombre: 'pedro',
+    mail: 'pedrobere@mail.com',
+    pass: 'LaAcade2001'
+}]
 
-    constructor(nombre, marca, precio, tipo, id) {
-        this.nombre = nombre;
-        this.marca = marca;
-        this.precio = parseInt(precio);
-        this.tipo = tipo;
-        this.id = id;
-    }
-
-    asignarId(array) {
-        this.id = array.length;
-    }
-
-
-}
-
-const productos = [
-    new Producto ('Hamburguesa clasica', 'Paty', 1000, 'carne', 1),
-    new Producto ('Hamburguesa clasica', 'Swift', 900, 'carne', 2),
-    new Producto ('Hamburguesa express', 'Paty', 700, 'carne', 3),
-    new Producto ('Hamburguesa burguer', 'Swift', 600, 'carne', 4),
-    new Producto ('Medallon pollo', 'Swift', 800, 'pollo', 5),
-    new Producto ('Patitas de pollo',' Swuift', 700, 'pollo', 6),
-    new Producto ('Milanesa de soja', 'Swift', 500, 'soja', 7),
-    new Producto ('Milanesa de carne', 'Paty', 600, 'carne', 8),
-]
-
-console.log(productos);
-
-
-// Pedir que se ingresen Productos nuevos y sumarlos al array //
-let continuar = true;
-
-while (continuar) {
-    let ingreso = prompt('Ingresa los datos del producto: nombre, marca, precio, tipo, id del 1 al 8, separados por una barra diagonal (/). Ingresa X para finalizar');
-
-    if (ingreso.toUpperCase() == 'X') {
-        continuar = false;
-        break;
-    }
-
-    let datos = ingreso.split('/');
-    const producto = new Producto(datos[0], datos[1], datos[2], datos[3], datos[4]);
-
-    productos.push(producto);
-
-    producto.asignarId(productos);
-
-    console.log(productos)
-} 
+const productos = [{
+    nombre: "Hamburguesa Clasica",
+    marca: "Paty",
+    precio: 850,
+    img: './img/Hamburguesa Paty.jpg'
+}, {
+    nombre: "Hamburguesa Clasica",
+    marca: "Swift",
+    precio: 800,
+    img: './img/Hamburguesa Swift.jpg'
+}, {
+    nombre: "Medallon de Pollo",
+    marca: "Swift",
+    precio: 750,
+    img: './img/Medallon de pollo Swift.jpg'
+}, {
+    nombre: "Milanesa de Soja",
+    marca: "Swift",
+    precio: 700,
+    img: './img/Milanesa de soja Swift.jpg'
+}]
 
 
-// Ordenar el array de acuerdo a lo que se elija //
+//Todos los elementos del DOM que voy a necesitar
+const mailLogin = document.getElementById('emailLogin'),
+    passLogin = document.getElementById('passwordLogin'),
+    recordar = document.getElementById('recordarme'),
+    btnLogin = document.getElementById('login'),
+    modalEl = document.getElementById('modalLogin'),
+    modal = new bootstrap.Modal(modalEl),
+    contTarjetas = document.getElementById('tarjetas'),
+    toggles = document.querySelectorAll('.toggles');
 
-let criterio = prompt('Elegí el criterio deseado:\n1 - nombre (A a Z) \n2 - marca (Z a A)\n3 - precio');
+//La función de validar se aprovecha del tipo de return que hace el método find (el objeto si lo encuentra, o undefined si no encuentra ninguno que cumpla con la condición)
+function validarUsuario(usersDB, user, pass) {
+    let encontrado = usersDB.find((userDB) => userDB.mail == user);
 
-function ordenar(criterio, array) {
-    let arrayOrdenado = array.slice(0);
-
-
-    switch (criterio) {
-        case '1':
-            let nombreAscendente = arrayOrdenado.sort((a, b)=> a.nombre.localeCompare(b.nombre));
-            return nombreAscendente;
-        case '2':
-            let nombreDescendente = arrayOrdenado.sort((a, b) => b.nombre.localeCompare(a.nombre));
-            return nombreDescendente;
-        case '3':
-            return arrayOrdenado.sort((a, b) => b.precio - a.precio);
-        default:
-            alert('No es un criterio válido');
-            break;
+    //console.log('Usuario encontrado por validate '+ typeof isFound);
+    if (typeof encontrado === 'undefined') {
+        return false;
+    } else {
+        //si estoy en este punto, quiere decir que el mail existe, sólo queda comparar la contraseña
+        if (encontrado.pass != pass) {
+            return false;
+        } else {
+            return encontrado;
+        }
     }
 }
 
+//Guardamos los datos que recuperamos de la database en el storage
+function guardarDatos(usuarioDB, storage) {
+    const usuario = {
+        'name': usuarioDB.nombre,
+        'user': usuarioDB.mail,
+        'pass': usuarioDB.pass
+    }
 
-function crearStringResultado(array){
-    let info = '';
+    storage.setItem('usuario', JSON.stringify(usuario));
+}
 
-    array.forEach(elemento=>{
-        info += 'Nombre: ' + elemento.nombre + '\nMarca: ' + elemento.marca + '\nPrecio: ' + elemento.precio + '\n\n'
-    })
+//Cambio el DOM para mostrar el nombre del usuario logueado, usando los datos del storage
+function saludar(usuario) {
+    nombreUsuario.innerHTML = `Bienvenido/a, <span>${usuario.name}</span>`
+}
 
-    return info;
+//Limpiar los storages
+function borrarDatos() {
+    localStorage.clear();
+    sessionStorage.clear();
+}
+
+//Recupero los datos que se guardaron y los retorno
+function recuperarUsuario(storage) {
+    let usuarioEnStorage = JSON.parse(storage.getItem('usuario'));
+    return usuarioEnStorage;
 }
 
 
-alert(crearStringResultado(ordenar(criterio,productos)));
+//Esta función revisa si hay un usuario guardado en el storage, y en ese caso evita todo el proceso de login 
+function estaLogueado(usuario) {
 
-
-
-// Filtrar Productos de acuerdo a la Marca //
-let marcaElegido = prompt('Escribí la marca para que te mostramos sus productos');
-
-const filtrado = productos.filter((producto)=>producto.marca.toLowerCase().includes(marcaElegido.toLowerCase()))
-
-
-// Mostrar Productos filtradas de acuerdo a la Marca //
-
-if (filtrado.length==0){
-    alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo');
-}else{
-    const imprimible = filtrado.map((producto)=>producto.nombre);
-    alert('Los productos de nuestro catálogo, de Marcas que coinciden parcial o totalmente con esta búsqueda, son:\n- ' + imprimible.join('\n- '));
+    if (usuario) {
+        saludar(usuario);
+        mostrarInfoProducto(productos);
+        presentarInfo(toggles, 'd-none');
+    }
 }
+
+//Esta función nos permite intercambiar la visualización de los elementos del DOM, agregando o sacando la clase d-none. Si el elemento la tiene, se la saco, y si no la tiene, se la agrego. La gata Flora de las funciones sería.
+function presentarInfo(array, clase) {
+    array.forEach(element => {
+        element.classList.toggle(clase);
+    });
+}
+
+//Creo HTML dinámico para mostrar la información de los productos a partir del array fake DB
+function mostrarInfoProducto(array) {
+    contTarjetas.innerHTML = '';
+    array.forEach(element => {
+        let html = `<div class="card cardProducto" id="tarjeta${element.nombre}">
+                <h3 class="card-header" id="nombreProducto">Producto: ${element.nombre}</h3>
+                <img src="${element.img}" alt="${element.nombre}" class="card-img-bottom" id="fotoProducto">
+                <div class="card-body">
+                    <p class="card-text" id="marcaProducto">Marca: ${element.marca}</p>
+                    <p class="card-text" id="precioProducto">Precio $: ${element.precio}</p>
+                </div>
+            </div>`;
+        contTarjetas.innerHTML += html;
+    });
+}
+
+//Eventos - Acciones de los botones
+btnLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    //Validamos que ambos campos estén completos
+    
+    //Revisamos si el return de la función validate es un objeto o un boolean. Si es un objeto, fue una validación exitosa y usamos los datos. Si no, informamos por alert.
+        let data = validarUsuario(usuarios, mailLogin.value, passLogin.value);
+
+        if (!data) {
+            alert(`Usuario y/o contraseña erróneos`);
+        } else {
+
+            //Revisamos si elige guardar la info aunque se cierre el navegador o no
+            if (recordar.checked) {
+                guardarDatos(data, localStorage);
+                saludar(recuperarUsuario(localStorage));
+            } else {
+                guardarDatos(data, sessionStorage);
+                saludar(recuperarUsuario(sessionStorage));
+            }
+            //Recién ahora cierro el cuadro de login
+            modal.hide();
+            //Muestro la info para usuarios logueados
+            mostrarInfoProducto(productos);
+            presentarInfo(toggles, 'd-none');
+        }
+
+});
+
+
+btnLogout.addEventListener('click', () => {
+    borrarDatos();
+    presentarInfo(toggles, 'd-none');
+});
+
+window.onload = () => estaLogueado(recuperarUsuario(localStorage)); 
+
